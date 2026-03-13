@@ -98,6 +98,8 @@
                     <option value="Kolkata">Kolkata</option>
                     <option value="Howrah">Howrah</option>
                     <option value="Siliguri">Siliguri</option>
+                    <option value="Bankura">Bankura</option>
+                    <option value="Medinipur">Medinipur</option>
                 </select>
             </div>
 
@@ -118,10 +120,10 @@
             <div class="form-group" id="organDropdownDiv" style="display: none;">
                 <label data-translate="organTypeLbl">Organ Required:</label>
                 <select id="organGrp">
-                    <option>Kidney</option>
                     <option>Liver</option>
-                    <option>Cornea</option>
+                    <option>Kidney</option>
                     <option>Heart</option>
+                    <option>Cornea</option>
                 </select>
             </div>
 
@@ -196,6 +198,15 @@
                 <span data-translate="ngoFormTitle">Request NGO Assistance</span>
                 <button class="audio-btn" onclick="speakText('ngoFormTitle')">🔊</button>
             </h2>
+
+            <div class="form-group">
+                <label data-translate="districtLbl">Select District:</label>
+                <select id="ngoDistrictSelect">
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Bankura">Bankura</option>
+                    <option value="Medinipur">Medinipur</option>
+                </select>
+            </div>
             
             <div class="form-group">
                 <label data-translate="helpTypeLbl">Type of Help Required:</label>
@@ -207,7 +218,7 @@
             </div>
 
             <div style="display: flex; gap: 15px;">
-                <button class="btn" style="flex: 2;" onclick="showSection('ngoResultsTable')" data-translate="searchNgoBtn">
+                <button class="btn" style="flex: 2;" onclick="validateAndSearchNgo()" data-translate="searchNgoBtn">
                     Find Nearest NGOs 🤝
                 </button>
                 <button class="btn btn-cancel" style="flex: 1;" onclick="goHome()" data-translate="btnCancel">
@@ -230,25 +241,7 @@
                             <th data-translate="colAction">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>LifeShare Foundation</strong></td>
-                            <td>Dum Dum Cantonment</td>
-                            <td>
-                                <button class="btn" style="margin-top:0; padding: 8px 15px;" onclick="contactNgo('LifeShare Foundation')" data-translate="btnContact">
-                                    Contact
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>CareBridge India</strong></td>
-                            <td>Madhyamgram</td>
-                            <td>
-                                <button class="btn" style="margin-top:0; padding: 8px 15px;" onclick="contactNgo('CareBridge India')" data-translate="btnContact">
-                                    Contact
-                                </button>
-                            </td>
-                        </tr>
+                    <tbody id="dynamicNgoTableBody">
                     </tbody>
                 </table>
             </div>
