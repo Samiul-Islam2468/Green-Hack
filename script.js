@@ -1,4 +1,4 @@
-console.log("Script loaded successfully!"); // Check your browser console for this message to confirm it's working!
+console.log("Script loaded successfully!");
 
 // --- Global State Variables ---
 let currentLang = 'en';
@@ -9,19 +9,71 @@ let markersArray = [];
 let userLat = null;
 let userLng = null;
 
-// --- FULL WEST BENGAL DATABASE ---
+// --- FULL WEST BENGAL HOSPITAL DATABASE (From Image 1 & Previous) ---
 const hospitalData = [
-    { district: "Kolkata", name: "R.G. Kar Blood Bank", address: "1st Floor, Emergency Building, Kolkata", phone: "033 2351 0620", lat: 22.5937, lng: 88.3714 },
-    { district: "Kolkata", name: "IBTM&IH", address: "205, Vivekananda Rd, Kolkata", phone: "033 2351 0620", lat: 22.5831, lng: 88.3715 },
-    { district: "Kolkata", name: "Life Care Blood Bank", address: "204/1B, Linton St, Kolkata", phone: "033 2284 2298", lat: 22.5487, lng: 88.3694 },
-    { district: "Kolkata", name: "Apollo Gleneagles Hospital", address: "Phoolbagan, Kankurgachi, Kolkata", phone: "033 2320 2122", lat: 22.5754, lng: 88.4026 },
-    { district: "Kolkata", name: "Tata Medical Centre", address: "DH Block(Newtown), Kolkata", phone: "03224 269 048", lat: 22.5750, lng: 88.4789 },
+    // LIVER (Kolkata)
+    { district: "Kolkata", organ: "Liver", name: "Bidhan Nagar Sub Divisional Hospital", address: "Salt Lake, DD 36, beside Bidhannagar, DD Block, Sector 1, Bidhannagar, Kolkata", phone: "N/A", lat: 22.5831, lng: 88.4026 },
+    { district: "Kolkata", organ: "Liver", name: "Infectious Diseases & Beleghata General Hospital", address: "57, Beleghata Main Rd, Subhas Sarobar Park, Phoolbagan, Beleghata, Kolkata", phone: "033 2303 2248", lat: 22.5694, lng: 88.3961 },
+    { district: "Kolkata", organ: "Liver", name: "Institute of Post Graduate Medical Education & Research and SSKM Hospital", address: "SSKM Hospital Rd, Bhowanipore, Kolkata", phone: "033 2204 1100", lat: 22.5393, lng: 88.3444 },
+    { district: "Kolkata", organ: "Liver", name: "Nil Ratan Sarkar Medical College and Hospital", address: "138, Acharya Jagdish Chandra Bose Rd, Sealdah, Raja Bazar, Kolkata", phone: "N/A", lat: 22.5658, lng: 88.3713 },
+    { district: "Kolkata", organ: "Liver", name: "R G Kar Medical College & Hospital", address: "1, Khudiram Bose Sarani, Bidhan Sarani, Shyam Bazar, Kolkata", phone: "033 2555 7656", lat: 22.5937, lng: 88.3714 },
+    { district: "Kolkata", organ: "Liver", name: "Calcutta National Medical College & Hospital", address: "32, Gorachand Rd, Beniapukur, Kolkata", phone: "N/A", lat: 22.5447, lng: 88.3744 },
+    { district: "Kolkata", organ: "Liver", name: "Apollo Multispeciality Hospitals", address: "58, Canal Circular Rd, Kadapara, Phoolbagan, Kankurgachi, Kolkata", phone: "080 6297 2764", lat: 22.5754, lng: 88.4026 },
+    { district: "Kolkata", organ: "Liver", name: "Woodlands Multispeciality Hospital Private Limited (WMHL)", address: "8/5, Alipore Rd, Alipore, Kolkata", phone: "033 4033 7000", lat: 22.5284, lng: 88.3291 },
+    { district: "Kolkata", organ: "Liver", name: "Manipal Hospitals Broadway", address: "JC-16 & 17, No. 3A, Broadway Rd, opp. to Stadium Gate, Sector 3, Bidhannagar, Kolkata", phone: "033 6907 0000", lat: 22.5684, lng: 88.4111 },
+    { district: "Kolkata", organ: "Liver", name: "Desun Hospital", address: "Desun More, 720, Eastern Metropolitan Bypass, Golpark, Sector I, Kasba, Kolkata", phone: "090517 15171", lat: 22.5188, lng: 88.4024 },
+    
+    // KIDNEY (Kolkata)
+    { district: "Kolkata", organ: "Kidney", name: "ILS Hospitals, Salt lake", address: "DD 6, Salt Lake Bypass, DD Block, Sector 1, Bidhannagar, Kolkata", phone: "033 4020 6500", lat: 22.5855, lng: 88.4023 },
+    { district: "Kolkata", organ: "Kidney", name: "Charnock Hospital - Super Specialty Hospital", address: "BMC 195, Biswa Bangla Sarani, Dhalipara, Tegharia, Newtown, Kolkata", phone: "033 4050 0500", lat: 22.6288, lng: 88.4443 },
+    { district: "Kolkata", organ: "Kidney", name: "Ruby General Hospital", address: "576, Anandapur Main Rd, Golpark, Sector I, Kasba, Kolkata", phone: "033 6601 1800", lat: 22.5132, lng: 88.4031 },
+    { district: "Kolkata", organ: "Kidney", name: "B.P. Poddar Hospital & Medical Research Limited", address: "71/1, Humayun Kabir Sarani, Block G, New Alipore, Kolkata", phone: "085850 35846", lat: 22.5113, lng: 88.3308 },
+    { district: "Kolkata", organ: "Kidney", name: "Fortis Hospital and Kidney Institute, Rash Behari", address: "11A, Rash Behari Ave, Dover Terrace, Gariahat, Kolkata", phone: "098730 30996", lat: 22.5186, lng: 88.3662 },
+    { district: "Kolkata", organ: "Kidney", name: "Sambhunath Pandit Hospital", address: "11, lala lajput rai road, Gaza Park, Sreepally, Bhowanipore, Kolkata", phone: "N/A", lat: 22.5398, lng: 88.3456 },
+    { district: "Kolkata", organ: "Kidney", name: "Chittaranjan Seva Sadan Hospital", address: "83, Shyama Prasad Mukherjee Rd, Bakul Bagan, Bhowanipore, Kolkata", phone: "033 2475 4584", lat: 22.5222, lng: 88.3473 },
+    { district: "Kolkata", organ: "Kidney", name: "Kolkata Police Hospital", address: "Beninandan St, Bhowanipore, Kolkata", phone: "033 2455 2064", lat: 22.5356, lng: 88.3441 },
+
+    // HEART (Kolkata)
+    { district: "Kolkata", organ: "Heart", name: "Vidyasagar State General Hospital", address: "4, Brahmo Samaj Rd, Vidyasagar Park, Behala, Kolkata", phone: "033 2397 1591", lat: 22.4939, lng: 88.3181 },
+    { district: "Kolkata", organ: "Heart", name: "M R Bangur Hospital", address: "249, Deshpran Sasmal Rd, Netajinagar, Rajendra Prasad Colony, Tollygunge, Kolkata", phone: "033 2473 3354", lat: 22.4965, lng: 88.3455 },
+    { district: "Kolkata", organ: "Heart", name: "B. R. Singh Hospital (Eastern Railway)", address: "Parikshit Roy Ln, Sealdah, Raja Bazar, Kolkata", phone: "033 2350 4075", lat: 22.5686, lng: 88.3732 },
+    { district: "Kolkata", organ: "Heart", name: "Kolkata Port Trust Hospital", address: "block a, 1, Diamond Harbour Rd, Uttar Raypur, New Alipore, Kolkata", phone: "033 2401 4503", lat: 22.5218, lng: 88.3248 },
+    { district: "Kolkata", organ: "Heart", name: "CMRI Hospital | CK Birla Hospitals", address: "7, 2, Diamond Harbour Rd, New Alipore, Kolkata", phone: "080 6213 6596", lat: 22.5330, lng: 88.3303 },
+    { district: "Kolkata", organ: "Heart", name: "IRIS MULTISPECIALITY HOSPITAL", address: "82/1, Raja Subodh Chandra Mallick Rd, Vidyasagar Colony, Ganguly Bagan, Kolkata", phone: "089295 79509", lat: 22.4764, lng: 88.3846 },
+    { district: "Kolkata", organ: "Heart", name: "Manipal Hospitals - Dhakuria", address: "C.I.T Scheme, Gariahat Rd, Dhakuria, LXXII Block A, P-4 & 5, Kolkata", phone: "033 6907 0000", lat: 22.5140, lng: 88.3719 },
+
+    // PREVIOUS OTHER DISTRICTS
     { district: "Howrah", name: "Howrah District Hospital", address: "Howrah Railway Station, West Bengal", phone: "033 2641 1227", lat: 22.5833, lng: 88.3333 },
     { district: "Howrah", name: "Suraksha Home Blood Centre", address: "30, 2nd Ln, Pilkhana, Salkia", phone: "099030 30131", lat: 22.5986, lng: 88.3496 },
-    { district: "Howrah", name: "North Bank Diagnostic", address: "320, Grand Trunk Road, Salkia", phone: "099037 83033", lat: 22.6050, lng: 88.3510 },
     { district: "Siliguri", name: "Siliguri Terai Lions Blood Bank", address: "Sevoke Road Jyothi nagar, Siliguri", phone: "090931 00755", lat: 26.7271, lng: 88.4316 },
-    { district: "Siliguri", name: "Neotia Getwel Specialty Hospital", address: "Uttorayon Twp, Matigara, Siliguri", phone: "0353 660 3000", lat: 26.7258, lng: 88.3912 },
-    { district: "Siliguri", name: "Indian Red Cross Society", address: "Red Cross Road, Ward 16, Siliguri", phone: "0353 243 5291", lat: 26.7150, lng: 88.4230 }
+    { district: "Siliguri", name: "Neotia Getwel Specialty Hospital", address: "Uttorayon Twp, Matigara, Siliguri", phone: "0353 660 3000", lat: 26.7258, lng: 88.3912 }
+];
+
+// --- FULL NGO DATABASE (From Image 2) ---
+const ngoData = [
+    // KOLKATA
+    { district: "Kolkata", name: "Narayan Seva Sansthan", address: "216, Bangur Ave, Block B, Block A, Lake Town, Kolkata", phone: "095299 20097" },
+    { district: "Kolkata", name: "Anudip Foundation for Social Welfare", address: "8th Floor, Mira Tower, Plot -27, DN Block, Sector V, Bidhannagar, Kolkata", phone: "N/A" },
+    { district: "Kolkata", name: "Hat Baralei Bondhu NGO", address: "BK 216, BK Block, Sector II, Bidhannagar, Kolkata", phone: "070014 64389" },
+    { district: "Kolkata", name: "CRY - Child Rights And You | NGO in Kolkata", address: "152, New No. 8, 2nd St, Gitanjali Park, Kalikapur, Haltu, Kolkata", phone: "091159 11500" },
+    { district: "Kolkata", name: "Jagorani NGO", address: "G-1, SS Heights, AC-130, Prafulla Kanan Rd, E, Rabindrapally, Kestopur, Kolkata", phone: "081001 55055" },
+    { district: "Kolkata", name: "Helpp", address: "86, Nalta Mahajati Rd, Nalta, Rajbari, Dum Dum, Kolkata", phone: "091233 48301" },
+    { district: "Kolkata", name: "Hi Charitable Foundation - NGO", address: "11B, NGO Office, 1, Gorapada Sarkar Ln, Daspara, Ultadanga, Kolkata", phone: "091631 95158" },
+    { district: "Kolkata", name: "Touch Of Earth NGO", address: "121, Gorakshabasi Rd, opposite to rajat bakery, Pratapaditya Nagar, Nagerbazar, Kolkata", phone: "090387 59422" },
+    
+    // BANKURA (Bakura)
+    { district: "Bankura", name: "Gandhi Vichar Parisad", address: "63Q7+JFC, School Danga, Bankura, West Bengal 722101", phone: "03242 250 664" },
+    { district: "Bankura", name: "Rural Development Society", address: "63Q6+CG4, Central Church Compound, College Road, Bankura", phone: "03242 250 001" },
+    { district: "Bankura", name: "Bankura Life Foundation", address: "38Q7+44M, Gopalpur, Shyamsundarpur, Bishnupur, West Bengal", phone: "089679 06455" },
+    { district: "Bankura", name: "Bankura Anusilan Samity", address: "63MG+G6R, Kuchkuchia Rd, Bankura, West Bengal 722101", phone: "N/A" },
+
+    // MEDINIPUR (Midnapore)
+    { district: "Medinipur", name: "Manabik Samsthan", address: "N-007, Mirbazar, Nabinabag, Midnapore, West Bengal", phone: "094750 28182" },
+    { district: "Medinipur", name: "Midnapur Marwari Sammelan", address: "Rangamati Mal, Jana Godayun Rd, Midnapore, West Bengal", phone: "N/A" },
+    { district: "Medinipur", name: "RADIANT THE HELPING SQUAD", address: "Ward Number 10, near Balaji Temple, Dhekeya, Malancha, Kharagpur", phone: "090464 20677" },
+    { district: "Medinipur", name: "Dishari Foundation", address: "Church Road, Netaji Nagar, Shekhpura, Midnapore, West Bengal", phone: "097496 28182" },
+    { district: "Medinipur", name: "Sarada Kalyan Bhandar", address: "Sector - F/1, Saratpally, West Bengal 721101", phone: "089001 56422" },
+    { district: "Medinipur", name: "Midnapore Peace Foundation", address: "Paramedical Surjonogor, Rangamati, Midnapore, West Bengal", phone: "095644 70827" }
 ];
 
 // --- FULL ENGLISH / BENGALI DICTIONARY ---
@@ -235,12 +287,13 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return distance.toFixed(1); 
 }
 
-// --- CORE SEARCH ALGORITHM ---
+// --- CORE SEARCH ALGORITHM (HOSPITALS) ---
 function validateAndSearch() {
     const ageElem = document.getElementById('patientAge');
     const bloodUnitsElem = document.getElementById('bloodUnits');
     const districtSelectElem = document.getElementById('districtSelect');
     const searchTypeElem = document.querySelector('input[name="searchType"]:checked');
+    const organSelectElem = document.getElementById('organGrp');
 
     if (!ageElem || !bloodUnitsElem || !districtSelectElem || !searchTypeElem) return;
 
@@ -248,6 +301,7 @@ function validateAndSearch() {
     const isBlood = searchTypeElem.value === 'blood';
     const units = bloodUnitsElem.value;
     const selectedDistrict = districtSelectElem.value;
+    const selectedOrgan = organSelectElem.value;
 
     if (age === "" || (isBlood && units === "")) {
         showToast("Please fill in all required fields!", "error");
@@ -257,7 +311,10 @@ function validateAndSearch() {
     showToast(`Fetching live data for ${selectedDistrict}...`, "success");
     
     let results = hospitalData.filter(function(hosp) {
-        return hosp.district === selectedDistrict;
+        let matchDistrict = hosp.district === selectedDistrict;
+        // If it's an organ search, only show hospitals that handle that organ (if specified in our data)
+        let matchOrgan = isBlood ? true : (!hosp.organ || hosp.organ === selectedOrgan);
+        return matchDistrict && matchOrgan;
     });
     
     if (userLat && userLng) {
@@ -274,7 +331,23 @@ function validateAndSearch() {
     showSection('resultsTable');
 }
 
-// --- DYNAMIC RENDERING (Table and Map) ---
+// --- NGO SEARCH ALGORITHM ---
+function validateAndSearchNgo() {
+    const districtSelectElem = document.getElementById('ngoDistrictSelect');
+    if (!districtSelectElem) return;
+
+    const selectedDistrict = districtSelectElem.value;
+    showToast(`Fetching NGOs in ${selectedDistrict}...`, "success");
+
+    let results = ngoData.filter(function(ngo) {
+        return ngo.district === selectedDistrict;
+    });
+
+    renderNgoTable(results);
+    showSection('ngoResultsTable');
+}
+
+// --- DYNAMIC RENDERING (Hospitals) ---
 function renderTableAndMap(filteredData) {
     const tbody = document.getElementById('dynamicTableBody');
     if (!tbody) return;
@@ -282,7 +355,13 @@ function renderTableAndMap(filteredData) {
     tbody.innerHTML = ""; 
 
     if (filteredData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 30px;">No facilities found in this area.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 30px;">No facilities found matching your criteria in this area.</td></tr>`;
+        
+        // Clear map if no results
+        if (map && typeof google !== 'undefined') {
+            markersArray.forEach(marker => marker.setMap(null));
+            markersArray = [];
+        }
         return;
     }
 
@@ -292,13 +371,14 @@ function renderTableAndMap(filteredData) {
             distHtml = `<br><span class="dist-badge">📍 ${hosp.distance} km away</span>`;
         }
         
+        const phoneTxt = hosp.phone !== "N/A" ? `📞 ${hosp.phone}` : "No contact available";
         const btnText = dictionary[currentLang]['btnBook'] || 'Book';
         
         tbody.innerHTML += `
             <tr>
                 <td>
                     <strong style="color: var(--primary); font-size: 15px;">${hosp.name}</strong><br>
-                    <span style="color:var(--text-muted); font-size:13px;">📞 ${hosp.phone}</span> 
+                    <span style="color:var(--text-muted); font-size:13px;">${phoneTxt}</span> 
                     ${distHtml}
                 </td>
                 <td style="color: #4b5563;">${hosp.address}</td>
@@ -329,6 +409,39 @@ function renderTableAndMap(filteredData) {
             markersArray.push(newMarker);
         });
     }
+}
+
+// --- DYNAMIC RENDERING (NGOs) ---
+function renderNgoTable(data) {
+    const tbody = document.getElementById('dynamicNgoTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+    
+    if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 30px;">No NGOs found in this district.</td></tr>`;
+        return;
+    }
+
+    data.forEach(function(ngo) {
+        const phoneTxt = ngo.phone !== "N/A" ? `📞 ${ngo.phone}` : "No contact available";
+        const btnText = dictionary[currentLang]['btnContact'] || 'Contact';
+
+        tbody.innerHTML += `
+            <tr>
+                <td>
+                    <strong style="color: var(--primary); font-size: 15px;">${ngo.name}</strong><br>
+                    <span style="color:var(--text-muted); font-size:13px;">${phoneTxt}</span>
+                </td>
+                <td style="color: #4b5563;">${ngo.address}</td>
+                <td>
+                    <button class="btn" style="margin-top:0; padding: 8px 15px; border-radius: 8px;" onclick="contactNgo('${ngo.name}')" data-translate="btnContact">
+                        ${btnText}
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
 }
 
 // --- GEOLOCATION INTEGRATION ---
@@ -400,7 +513,7 @@ function initMap() {
 // --- RAZORPAY INTEGRATION ---
 function payWithRazorpay() {
     const options = {
-        "key": "rzp_live_SJiSy0USTt3wUl",
+        "key": "YOUR_RAZORPAY_KEY_ID_HERE", // Change this back to your key!
         "amount": "10000",
         "currency": "INR",
         "name": "Green Hacks Logistics",
