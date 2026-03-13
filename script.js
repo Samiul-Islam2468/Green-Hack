@@ -400,7 +400,7 @@ function initMap() {
 // --- RAZORPAY INTEGRATION ---
 function payWithRazorpay() {
     const options = {
-        "key": "YOUR_RAZORPAY_KEY_ID_HERE",
+        "key": "rzp_live_SJiSy0USTt3wUl",
         "amount": "10000",
         "currency": "INR",
         "name": "Green Hacks Logistics",
