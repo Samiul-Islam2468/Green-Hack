@@ -1,3 +1,5 @@
+console.log("Script loaded successfully!"); // Check your browser console for this message to confirm it's working!
+
 // --- Global State Variables ---
 let currentLang = 'en';
 let selectedHospital = "";
@@ -9,94 +11,17 @@ let userLng = null;
 
 // --- FULL WEST BENGAL DATABASE ---
 const hospitalData = [
-    { 
-        district: "Kolkata", 
-        name: "R.G. Kar Blood Bank", 
-        address: "1st Floor, Emergency Building, Kolkata", 
-        phone: "033 2351 0620", 
-        lat: 22.5937, 
-        lng: 88.3714 
-    },
-    { 
-        district: "Kolkata", 
-        name: "IBTM&IH", 
-        address: "205, Vivekananda Rd, Kolkata", 
-        phone: "033 2351 0620", 
-        lat: 22.5831, 
-        lng: 88.3715 
-    },
-    { 
-        district: "Kolkata", 
-        name: "Life Care Blood Bank", 
-        address: "204/1B, Linton St, Kolkata", 
-        phone: "033 2284 2298", 
-        lat: 22.5487, 
-        lng: 88.3694 
-    },
-    { 
-        district: "Kolkata", 
-        name: "Apollo Gleneagles Hospital", 
-        address: "Phoolbagan, Kankurgachi, Kolkata", 
-        phone: "033 2320 2122", 
-        lat: 22.5754, 
-        lng: 88.4026 
-    },
-    { 
-        district: "Kolkata", 
-        name: "Tata Medical Centre", 
-        address: "DH Block(Newtown), Kolkata", 
-        phone: "03224 269 048", 
-        lat: 22.5750, 
-        lng: 88.4789 
-    },
-    { 
-        district: "Howrah", 
-        name: "Howrah District Hospital", 
-        address: "Howrah Railway Station, West Bengal", 
-        phone: "033 2641 1227", 
-        lat: 22.5833, 
-        lng: 88.3333 
-    },
-    { 
-        district: "Howrah", 
-        name: "Suraksha Home Blood Centre", 
-        address: "30, 2nd Ln, Pilkhana, Salkia", 
-        phone: "099030 30131", 
-        lat: 22.5986, 
-        lng: 88.3496 
-    },
-    { 
-        district: "Howrah", 
-        name: "North Bank Diagnostic", 
-        address: "320, Grand Trunk Road, Salkia", 
-        phone: "099037 83033", 
-        lat: 22.6050, 
-        lng: 88.3510 
-    },
-    { 
-        district: "Siliguri", 
-        name: "Siliguri Terai Lions Blood Bank", 
-        address: "Sevoke Road Jyothi nagar, Siliguri", 
-        phone: "090931 00755", 
-        lat: 26.7271, 
-        lng: 88.4316 
-    },
-    { 
-        district: "Siliguri", 
-        name: "Neotia Getwel Specialty Hospital", 
-        address: "Uttorayon Twp, Matigara, Siliguri", 
-        phone: "0353 660 3000", 
-        lat: 26.7258, 
-        lng: 88.3912 
-    },
-    { 
-        district: "Siliguri", 
-        name: "Indian Red Cross Society", 
-        address: "Red Cross Road, Ward 16, Siliguri", 
-        phone: "0353 243 5291", 
-        lat: 26.7150, 
-        lng: 88.4230 
-    }
+    { district: "Kolkata", name: "R.G. Kar Blood Bank", address: "1st Floor, Emergency Building, Kolkata", phone: "033 2351 0620", lat: 22.5937, lng: 88.3714 },
+    { district: "Kolkata", name: "IBTM&IH", address: "205, Vivekananda Rd, Kolkata", phone: "033 2351 0620", lat: 22.5831, lng: 88.3715 },
+    { district: "Kolkata", name: "Life Care Blood Bank", address: "204/1B, Linton St, Kolkata", phone: "033 2284 2298", lat: 22.5487, lng: 88.3694 },
+    { district: "Kolkata", name: "Apollo Gleneagles Hospital", address: "Phoolbagan, Kankurgachi, Kolkata", phone: "033 2320 2122", lat: 22.5754, lng: 88.4026 },
+    { district: "Kolkata", name: "Tata Medical Centre", address: "DH Block(Newtown), Kolkata", phone: "03224 269 048", lat: 22.5750, lng: 88.4789 },
+    { district: "Howrah", name: "Howrah District Hospital", address: "Howrah Railway Station, West Bengal", phone: "033 2641 1227", lat: 22.5833, lng: 88.3333 },
+    { district: "Howrah", name: "Suraksha Home Blood Centre", address: "30, 2nd Ln, Pilkhana, Salkia", phone: "099030 30131", lat: 22.5986, lng: 88.3496 },
+    { district: "Howrah", name: "North Bank Diagnostic", address: "320, Grand Trunk Road, Salkia", phone: "099037 83033", lat: 22.6050, lng: 88.3510 },
+    { district: "Siliguri", name: "Siliguri Terai Lions Blood Bank", address: "Sevoke Road Jyothi nagar, Siliguri", phone: "090931 00755", lat: 26.7271, lng: 88.4316 },
+    { district: "Siliguri", name: "Neotia Getwel Specialty Hospital", address: "Uttorayon Twp, Matigara, Siliguri", phone: "0353 660 3000", lat: 26.7258, lng: 88.3912 },
+    { district: "Siliguri", name: "Indian Red Cross Society", address: "Red Cross Road, Ward 16, Siliguri", phone: "0353 243 5291", lat: 26.7150, lng: 88.4230 }
 ];
 
 // --- FULL ENGLISH / BENGALI DICTIONARY ---
@@ -200,22 +125,18 @@ function toggleLanguage() {
         }
     });
     
-    // Stop any playing audio when language switches
     window.speechSynthesis.cancel();
 }
 
 // --- AUDIO FUNCTION ---
 function speakText(translationKey) {
-    // Cancel any ongoing speech
     window.speechSynthesis.cancel();
     
-    // Get text and remove emojis so it doesn't read them out loud
     let textToSpeak = dictionary[currentLang][translationKey];
     textToSpeak = textToSpeak.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, ''); 
     
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     
-    // Set language code based on current selection
     if (currentLang === 'en') {
         utterance.lang = 'en-IN';
     } else {
@@ -238,7 +159,6 @@ function showSection(sectionId) {
         'adminDashboard'
     ];
     
-    // Remove active class from all sections
     sections.forEach(function(id) {
         const element = document.getElementById(id);
         if (element) {
@@ -247,14 +167,12 @@ function showSection(sectionId) {
         }
     });
     
-    // Add active class to requested section to trigger CSS animation
     const activeElement = document.getElementById(sectionId);
     if (activeElement) {
         activeElement.classList.remove('hidden-section');
         activeElement.classList.add('active-section');
     }
     
-    // Load map only when results table is visible to prevent sizing bugs
     if (sectionId === 'resultsTable') { 
         setTimeout(initMap, 100); 
     }
@@ -265,7 +183,10 @@ function goHome() {
 }
 
 function toggleSearchType() {
-    const isBlood = document.querySelector('input[name="searchType"]:checked').value === 'blood';
+    const searchTypeElement = document.querySelector('input[name="searchType"]:checked');
+    if (!searchTypeElement) return;
+
+    const isBlood = searchTypeElement.value === 'blood';
     
     const bloodDropdown = document.getElementById('bloodDropdownDiv');
     const organDropdown = document.getElementById('organDropdownDiv');
@@ -285,14 +206,9 @@ function toggleSearchType() {
 // --- CUSTOM TOAST ALERTS ---
 function showToast(message, type) {
     const toast = document.getElementById("toast");
-    let icon = '';
-    
-    if (type === 'success') {
-        icon = '✅';
-    } else {
-        icon = '⚠️';
-    }
-    
+    if(!toast) return;
+
+    let icon = (type === 'success') ? '✅' : '⚠️';
     toast.innerHTML = icon + ' ' + message; 
     toast.className = "show " + type;
     
@@ -305,7 +221,7 @@ function showToast(message, type) {
 function calculateDistance(lat1, lon1, lat2, lon2) {
     if (!lat1 || !lon1) return null;
     
-    const R = 6371; // Earth's radius in kilometers
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     
@@ -321,12 +237,18 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 // --- CORE SEARCH ALGORITHM ---
 function validateAndSearch() {
-    const age = document.getElementById('patientAge').value;
-    const isBlood = document.querySelector('input[name="searchType"]:checked').value === 'blood';
-    const units = document.getElementById('bloodUnits').value;
-    const selectedDistrict = document.getElementById('districtSelect').value;
+    const ageElem = document.getElementById('patientAge');
+    const bloodUnitsElem = document.getElementById('bloodUnits');
+    const districtSelectElem = document.getElementById('districtSelect');
+    const searchTypeElem = document.querySelector('input[name="searchType"]:checked');
 
-    // Form validation
+    if (!ageElem || !bloodUnitsElem || !districtSelectElem || !searchTypeElem) return;
+
+    const age = ageElem.value;
+    const isBlood = searchTypeElem.value === 'blood';
+    const units = bloodUnitsElem.value;
+    const selectedDistrict = districtSelectElem.value;
+
     if (age === "" || (isBlood && units === "")) {
         showToast("Please fill in all required fields!", "error");
         return;
@@ -334,12 +256,10 @@ function validateAndSearch() {
     
     showToast(`Fetching live data for ${selectedDistrict}...`, "success");
     
-    // Filter array based on dropdown
     let results = hospitalData.filter(function(hosp) {
         return hosp.district === selectedDistrict;
     });
     
-    // If location is enabled, calculate distance and sort
     if (userLat && userLng) {
         results.forEach(function(hosp) { 
             hosp.distance = calculateDistance(userLat, userLng, hosp.lat, hosp.lng); 
@@ -357,15 +277,15 @@ function validateAndSearch() {
 // --- DYNAMIC RENDERING (Table and Map) ---
 function renderTableAndMap(filteredData) {
     const tbody = document.getElementById('dynamicTableBody');
+    if (!tbody) return;
+
     tbody.innerHTML = ""; 
 
-    // Handle empty results
     if (filteredData.length === 0) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 30px;">No facilities found in this area.</td></tr>`;
         return;
     }
 
-    // Generate rows
     filteredData.forEach(function(hosp) {
         let distHtml = '';
         if (hosp.distance) {
@@ -391,19 +311,15 @@ function renderTableAndMap(filteredData) {
         `;
     });
 
-    // Update map pins dynamically
-    if (map) {
-        // Clear old pins
+    if (map && typeof google !== 'undefined') {
         markersArray.forEach(function(marker) {
             marker.setMap(null);
         });
         markersArray = [];
         
-        // Recenter map on the first result
         map.setCenter({ lat: filteredData[0].lat, lng: filteredData[0].lng });
         map.setZoom(12);
 
-        // Add new pins
         filteredData.forEach(function(hosp) {
             let newMarker = new google.maps.Marker({ 
                 position: { lat: hosp.lat, lng: hosp.lng }, 
@@ -420,14 +336,14 @@ function getLocation() {
     const locText = document.getElementById('locText');
     const btn = document.querySelector('.location-banner button');
     
-    if (navigator.geolocation) {
+    if (navigator.geolocation && locText) {
         if (currentLang === 'en') {
             locText.innerHTML = "⏳ Fetching your location...";
         } else {
             locText.innerHTML = "⏳ অবস্থান আনা হচ্ছে...";
         }
         
-        btn.classList.remove('pulse-btn');
+        if (btn) btn.classList.remove('pulse-btn');
         
         navigator.geolocation.getCurrentPosition(
             function(position) {
@@ -441,7 +357,7 @@ function getLocation() {
                 }
                 
                 locText.style.color = "var(--primary)";
-                btn.style.display = "none";
+                if (btn) btn.style.display = "none";
                 
                 showToast("Location synced. Distance sorting enabled!", "success");
             }, 
@@ -457,30 +373,35 @@ function getLocation() {
 // --- PREPARE DATA FOR NEXT SECTIONS ---
 function bookFacility(hospitalName) { 
     selectedHospital = hospitalName; 
-    document.getElementById('hospitalNameDisplay').innerText = hospitalName; 
+    const display = document.getElementById('hospitalNameDisplay');
+    if (display) display.innerText = hospitalName; 
     showSection('paymentScreen'); 
 }
 
 function contactNgo(ngoName) { 
-    document.getElementById('ngoNameDisplay').innerText = ngoName; 
+    const display = document.getElementById('ngoNameDisplay');
+    if (display) display.innerText = ngoName; 
     showSection('ngoContactScreen'); 
 }
 
 function initMap() { 
-    if (map) return; 
+    if (map || typeof google === 'undefined') return; 
     
-    const initialLocation = { lat: 22.5726, lng: 88.3639 }; // Default to Kolkata center
-    map = new google.maps.Map(document.getElementById("map"), { 
-        zoom: 11, 
-        center: initialLocation 
-    }); 
+    const initialLocation = { lat: 22.5726, lng: 88.3639 };
+    const mapElement = document.getElementById("map");
+    if (mapElement) {
+        map = new google.maps.Map(mapElement, { 
+            zoom: 11, 
+            center: initialLocation 
+        }); 
+    }
 }
 
-// --- RAZORPAY INTEGRATION (WITH USER DATA) ---
+// --- RAZORPAY INTEGRATION ---
 function payWithRazorpay() {
     const options = {
-        "key": "YOUR_RAZORPAY_KEY_ID_HERE", // IMPORTANT: Paste your rzp_test_ key here!
-        "amount": "10000", // Amount in paise
+        "key": "YOUR_RAZORPAY_KEY_ID_HERE",
+        "amount": "10000",
         "currency": "INR",
         "name": "Green Hacks Logistics",
         "description": "Token for " + selectedHospital,
@@ -494,18 +415,22 @@ function payWithRazorpay() {
             }, 2000);
         },
         "prefill": {
-            "name": "Samiul Islam", // Restored user details
+            "name": "Samiul Islam",
             "contact": "7601868550"
         }
     };
     
-    const rzp = new Razorpay(options);
-    
-    rzp.on('payment.failed', function (response) {
-        showToast("❌ Payment Failed: " + response.error.description, "error");
-    });
-    
-    rzp.open(); 
+    if (typeof Razorpay !== 'undefined') {
+        const rzp = new Razorpay(options);
+        
+        rzp.on('payment.failed', function (response) {
+            showToast("❌ Payment Failed: " + response.error.description, "error");
+        });
+        
+        rzp.open(); 
+    } else {
+        showToast("Razorpay failed to load.", "error");
+    }
 }
 
 // --- ADMIN DASHBOARD (CHART.JS) ---
@@ -513,11 +438,31 @@ function showAdmin() {
     showSection('adminDashboard'); 
     showToast("Admin access granted.", "success");
     
-    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    const canvas = document.getElementById('inventoryChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    const ctx = canvas.getContext('2d');
     
-    // Destroy existing chart to prevent overlapping glitches
     if (chartInstance) {
         chartInstance.destroy();
     }
     
-    chartInstance = new Chart(ctx, {
+    chartInstance = new Chart(ctx, { 
+        type: 'bar', 
+        data: { 
+            labels: ['A+', 'O+', 'B+', 'AB+', 'Kidney', 'Liver'], 
+            datasets: [{ 
+                label: 'Current Availability', 
+                data: [45, 60, 25, 10, 5, 2], 
+                backgroundColor: ['#10b981', '#10b981', '#10b981', '#10b981', '#0f766e', '#0f766e'], 
+                borderRadius: 8 
+            }] 
+        }, 
+        options: { 
+            responsive: true, 
+            plugins: { 
+                legend: { position: 'bottom' } 
+            } 
+        } 
+    });
+}
