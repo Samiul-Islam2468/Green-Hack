@@ -77,7 +77,6 @@ const ngoData = [
 ];
 
 // --- FULL ENGLISH / BENGALI DICTIONARY ---
-// --- FULL ENGLISH / BENGALI DICTIONARY ---
 const dictionary = {
     'en': {
         'navHome': 'HOME', 
@@ -455,45 +454,6 @@ function renderNgoTable(data) {
     });
 }
 
-// --- GEOLOCATION INTEGRATION ---
-function getLocation() {
-    const locText = document.getElementById('locText');
-    const btn = document.querySelector('.location-banner button');
-    
-    if (navigator.geolocation && locText) {
-        if (currentLang === 'en') {
-            locText.innerHTML = "⏳ Fetching your location...";
-        } else {
-            locText.innerHTML = "⏳ অবস্থান আনা হচ্ছে...";
-        }
-        
-        if (btn) btn.classList.remove('pulse-btn');
-        
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                userLat = position.coords.latitude;
-                userLng = position.coords.longitude;
-                
-                if (currentLang === 'en') {
-                    locText.innerHTML = `Location captured: Lat ${userLat.toFixed(2)}, Lng ${userLng.toFixed(2)}`;
-                } else {
-                    locText.innerHTML = `✅ অবস্থান ক্যাপচার করা হয়েছে: অক্ষাংশ ${userLat.toFixed(2)}, দ্রাঘিমাংশ ${userLng.toFixed(2)}`;
-                }
-                
-                locText.style.color = "var(--primary)";
-                if (btn) btn.style.display = "none";
-                
-                showToast("Location synced. Distance sorting enabled!", "success");
-            }, 
-            function() { 
-                locText.innerHTML = "❌ Location access denied."; 
-                locText.style.color = "red";
-                showToast("Could not access location.", "error"); 
-            }
-        );
-    }
-}
-
 // --- PREPARE DATA FOR NEXT SECTIONS ---
 function bookFacility(hospitalName) { 
     selectedHospital = hospitalName; 
@@ -518,42 +478,6 @@ function initMap() {
             zoom: 11, 
             center: initialLocation 
         }); 
-    }
-}
-
-// --- RAZORPAY INTEGRATION ---
-function payWithRazorpay() {
-    const options = {
-        "key": "YOUR_RAZORPAY_KEY_ID_HERE", // Change this back to your key!
-        "amount": "10000",
-        "currency": "INR",
-        "name": "Green Hacks Logistics",
-        "description": "Token for " + selectedHospital,
-        "theme": { "color": "#059669" },
-        "handler": function (response) {
-            showToast("Payment Success! ID: " + response.razorpay_payment_id, "success");
-            
-            setTimeout(function() { 
-                alert("Booking Confirmed for " + selectedHospital + "!\nYour receipt ID is " + Math.floor(Math.random() * 100000)); 
-                goHome(); 
-            }, 2000);
-        },
-        "prefill": {
-            "name": "Samiul Islam",
-            "contact": "7601868550"
-        }
-    };
-    
-    if (typeof Razorpay !== 'undefined') {
-        const rzp = new Razorpay(options);
-        
-        rzp.on('payment.failed', function (response) {
-            showToast("❌ Payment Failed: " + response.error.description, "error");
-        });
-        
-        rzp.open(); 
-    } else {
-        showToast("Razorpay failed to load.", "error");
     }
 }
 
@@ -589,4 +513,128 @@ function showAdmin() {
             } 
         } 
     });
+}
+
+// --- NEW & ROBUST GEOLOCATION FUNCTION (NATIVE READY) ---
+async function getLocation() {
+    const locText = document.getElementById('locText');
+    const btn = document.querySelector('.location-banner button');
+    
+    if (locText) {
+        if (currentLang === 'en') {
+            locText.innerHTML = "⏳ Fetching your location...";
+        } else {
+            locText.innerHTML = "⏳ অবস্থান আনা হচ্ছে...";
+        }
+        locText.style.color = "var(--text-muted)";
+    }
+    if (btn) btn.classList.remove('pulse-btn');
+
+    try {
+        // 1. Check if running inside the Native Android App (Capacitor)
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Geolocation) {
+            
+            // 2. Force the Native Android Permission Request
+            const permissionStatus = await window.Capacitor.Plugins.Geolocation.requestPermissions();
+            
+            if (permissionStatus.location !== 'granted') {
+                throw new Error("User denied native permission");
+            }
+
+            // 3. Get the native coordinates
+            const position = await window.Capacitor.Plugins.Geolocation.getCurrentPosition({
+                enableHighAccuracy: true,
+                timeout: 10000
+            });
+            
+            userLat = position.coords.latitude;
+            userLng = position.coords.longitude;
+
+        } else {
+            // Fallback for normal web browser testing
+            if (!navigator.geolocation) throw new Error("Browser doesn't support geolocation");
+            
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true });
+            });
+            userLat = position.coords.latitude;
+            userLng = position.coords.longitude;
+        }
+
+        // Success Update
+        if (locText) {
+            if (currentLang === 'en') {
+                locText.innerHTML = `✅ Location captured: Lat ${userLat.toFixed(2)}, Lng ${userLng.toFixed(2)}`;
+            } else {
+                locText.innerHTML = `✅ অবস্থান ক্যাপচার করা হয়েছে: অক্ষাংশ ${userLat.toFixed(2)}, দ্রাঘিমাংশ ${userLng.toFixed(2)}`;
+            }
+            locText.style.color = "var(--primary)";
+        }
+        if (btn) btn.style.display = "none";
+        showToast("Location synced. Distance sorting enabled!", "success");
+
+    } catch (error) {
+        console.error("Location Error:", error);
+        if (locText) {
+            locText.innerHTML = "❌ Location access denied."; 
+            locText.style.color = "red";
+        }
+        if (btn) btn.classList.add('pulse-btn');
+        showToast("Permission denied. Check Android Settings.", "error");
+    }
+}
+
+// --- CAPACITOR NATIVE RAZORPAY INTEGRATION ---
+async function payWithRazorpay() {
+    const options = {
+        "key": "rzp_live_SJiSy0USTt3wUl", // Change this back to your key!
+        "amount": "10000",
+        "currency": "INR",
+        "name": "Green Hacks Logistics",
+        "description": "Token for " + selectedHospital,
+        "theme": { "color": "#059669" },
+        "prefill": {
+            "name": "Samiul Islam",
+            "contact": "7601868550"
+        }
+    };
+    
+    try {
+        // Check if Capacitor is available (App Mode)
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Checkout) {
+            const data = await window.Capacitor.Plugins.Checkout.open(options);
+            
+            showToast("Payment Success! ID: " + data.response.razorpay_payment_id, "success");
+            
+            setTimeout(function() { 
+                alert("Booking Confirmed for " + selectedHospital + "!\nYour receipt ID is " + Math.floor(Math.random() * 100000)); 
+                goHome(); 
+            }, 2000);
+        } else {
+            // Fallback for Browser Mode
+            if (typeof Razorpay !== 'undefined') {
+                options.handler = function (response) {
+                    showToast("Payment Success! ID: " + response.razorpay_payment_id, "success");
+                    
+                    setTimeout(function() { 
+                        alert("Booking Confirmed for " + selectedHospital + "!\nYour receipt ID is " + Math.floor(Math.random() * 100000)); 
+                        goHome(); 
+                    }, 2000);
+                };
+                
+                const rzp = new Razorpay(options);
+                
+                rzp.on('payment.failed', function (response) {
+                    showToast("❌ Payment Failed: " + response.error.description, "error");
+                });
+                
+                rzp.open(); 
+            } else {
+                showToast("Razorpay failed to load.", "error");
+            }
+        }
+    } catch (error) {
+        console.error("Payment Failed or Cancelled:", error);
+        showToast("❌ Payment Failed or Cancelled.", "error");
+    }
 }
